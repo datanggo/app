@@ -18,16 +18,21 @@ const requests = axios.create({
 });
 
 // 在当前文件中引入仓库
-import stort from "@/store";
+import store from "@/store";
 
 // 请求拦截器：在发请求之前，请求拦截器可以检测到，可以在请求发出去之前做一些事情
 requests.interceptors.request.use((config) => {
   // config:配置对象，对象里面有一个属性很重要，headers请求头
   //进度条开始
   // 判断仓库中是否有uuid，如果有把他作为请求头带过去
-  if (stort.state.detail.uuid_token) {
+  if (store.state.detail.uuid_token) {
     // 给请求头添加一个字段(userTempId)，和后台老师商量好是那个字段
-    config.headers.userTempId = stort.state.detail.uuid_token;
+    config.headers.userTempId = store.state.detail.uuid_token;
+  }
+
+  // 需要携带token带给服务器
+  if (store.state.user.token) {
+    config.headers.token = store.state.user.token
   }
 
   nprogress.start();

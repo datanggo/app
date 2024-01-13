@@ -57,6 +57,8 @@ export default {
   mounted() {
     //派发action,获取floor中的数据
     this.$store.dispatch("getFloorList");
+
+    // this.$store.dispatch("getUserInfo");
   },
 };
 </script>

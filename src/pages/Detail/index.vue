@@ -457,7 +457,7 @@ export default {
       }
 
       // 所以加上async会返回一个promise对象
-      console.log(result);
+
       // 2：成功(路由跳转)，失败给用户提示
     },
   },
