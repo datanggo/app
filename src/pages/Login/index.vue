@@ -106,7 +106,10 @@ export default {
 
         // 登录成功把返回的token值存储到本低
         // 跳转到HOME首页
-        this.$router.push("/home");
+        // 登录的路由组件：看地址当中是否包含query参数，如果有跳转到query指定的路由中，如果没有跳到home
+        // console.log(this.$route.query.redirect);
+        let toPath = this.$route.query.redirect || "/home";
+        this.$router.push(toPath);
       } catch (error) {
         alert(error.message);
       }

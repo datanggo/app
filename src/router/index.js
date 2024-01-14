@@ -1,60 +1,70 @@
 // 我是路由配置的地方
 
 // 引入vue
-import Vue from 'vue'
+import Vue from "vue";
 
 // 引入vue-router
-import VueRouter from "vue-router"
+import VueRouter from "vue-router";
 
 // 引入仓库，使用仓库中的数据
-import store from "@/store"
+import store from "@/store";
 
 // 使用插件
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 // 引入路由配置数组
-import routes from '@/router/routes'
-import { valid } from 'mockjs'
+import routes from "@/router/routes";
+import { valid } from "mockjs";
 
 // 先把VueRouter原型对象的push属性，先保存一份、
-let originPush = VueRouter.prototype.push
+let originPush = VueRouter.prototype.push;
 // 先把VueRouter原型对象的replace属性，先保存一份、
-let originReplace = VueRouter.prototype.replace
+let originReplace = VueRouter.prototype.replace;
 
 // 重写push|repliace方法
 //第一个参数：告诉原来push方法，你往哪里跳转(传递那些参数)
 VueRouter.prototype.push = function (location, resolve, reject) {
-    if (resolve && reject) {
-        // call || apply区别：
-        // 相同点，都可以调用函数一次，都可以篡改函数上下文一次
-        // 不同点，call 与apply传递参数：call传递参数用逗号隔开，apply方法执行，传递数组
-        originPush.call(this, location, resolve, reject)
-    } else {
-        originPush.call(this, location, () => { }, () => { })
-    }
-}
+  if (resolve && reject) {
+    // call || apply区别：
+    // 相同点，都可以调用函数一次，都可以篡改函数上下文一次
+    // 不同点，call 与apply传递参数：call传递参数用逗号隔开，apply方法执行，传递数组
+    originPush.call(this, location, resolve, reject);
+  } else {
+    originPush.call(
+      this,
+      location,
+      () => {},
+      () => {}
+    );
+  }
+};
 // 重写repliace方法
 VueRouter.prototype.replace = function (location, resolve, reject) {
-    if (resolve && reject) {
-        originReplace.call(this, location, resolve, reject)
-    } else {
-        originReplace.call(this, location, () => { }, () => { })
-    }
-}
+  if (resolve && reject) {
+    originReplace.call(this, location, resolve, reject);
+  } else {
+    originReplace.call(
+      this,
+      location,
+      () => {},
+      () => {}
+    );
+  }
+};
 
 //配置路由
 
 let router = new VueRouter({
-    // 配置路由
-    // routes: routes
-    // key:value一致省略v
-    routes,
-    // 滚动行为
-    scrollBehavior(to, from, savedPosition) {
-        // 返回的y=0，代表滚动条在最上方，即距离顶部0像素
-        return { y: 0 }
-    }
-})
+  // 配置路由
+  // routes: routes
+  // key:value一致省略v
+  routes,
+  // 滚动行为
+  scrollBehavior(to, from, savedPosition) {
+    // 返回的y=0，代表滚动条在最上方，即距离顶部0像素
+    return { y: 0 };
+  },
+});
 
 // 全局守卫-前置全局守卫配置对象
 /* router.beforeEach(async (to, from, next) => {
@@ -103,45 +113,56 @@ let router = new VueRouter({
 }) */
 
 router.beforeEach(async (to, from, next) => {
-    // to:获取到要跳转到的路由信息
-    // from：从哪个路由跳转到的
-    // 方便测试统一放行 
-    // next()
+  // to:获取到要跳转到的路由信息
+  // from：从哪个路由跳转到的
+  // 方便测试统一放行
+  // next()
 
-    // 获取仓库中的token----可以确定用户登录了
-    let token = store.state.user.token
+  // 获取仓库中的token----可以确定用户登录了
+  let token = store.state.user.token;
 
-    // 获取到登录后的属性值
-    let name = store.state.user.userInfo.name
-    if (token) {
-        // 用户登录了
-        if (to.path == "/login" || to.path == "/register") {
-            // 已经登录了还想去登录页和注册页不放行
-            next("/")
-        } else {
-            // 已经登录了，但是去的是非登录页和注册页
-            if (name) {
-                // 如果登录且有用户信息，直接放行
-                next()
-            } else {
-                // 登录了但是没有用户信息
-                try {
-                    // 先获取用户信息再放行
-                    await store.dispatch("getUserInfo")
-                    next()
-                } catch (error) {
-                    // token失效会请求失败
-                    await store.dispatch("userLogout")
-                    next("/login")
-                }
-            }
-        }
+  // 获取到登录后的属性值
+  let name = store.state.user.userInfo.name;
+  if (token) {
+    // 用户登录了
+    if (to.path == "/login" || to.path == "/register") {
+      // 已经登录了还想去登录页和注册页不放行
+      next("/");
     } else {
-        // 用户未登录
-        next()
+      // 已经登录了，但是去的是非登录页和注册页
+      if (name) {
+        // 如果登录且有用户信息，直接放行
+        next();
+      } else {
+        // 登录了但是没有用户信息
+        try {
+          // 先获取用户信息再放行
+          await store.dispatch("getUserInfo");
+          next();
+        } catch (error) {
+          // token失效会请求失败
+          await store.dispatch("userLogout");
+          next("/login");
+        }
+      }
     }
-})
-
+  } else {
+    // 用户未登录
+    // 未登录不能去交易相关的，不能去个人中心，支付相关的【pay，paysuccess】
+    // 未登录去上面的这些路由应该去登录页，去的不是上面的这些路由直接放行home'，search，shopCart
+    let toPath = to.path;
+    if (
+      toPath.indexOf("/trade") != -1 ||
+      toPath.indexOf("/pay") != -1 ||
+      toPath.indexOf("/center") != -1
+    ) {
+      // 把未登录的时候，把想去的路由而没有去成的路由信息存储到路径中
+      next("/login?redirect=" + toPath);
+    } else {
+      next();
+    }
+  }
+});
 
 // 向外暴露VueRouter的一个实例
-export default router
+export default router;
