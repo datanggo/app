@@ -1,18 +1,18 @@
 // 引入路由组件
-import Home from "@/pages/Home";
-// import Login from "@/pages/Login";    ///下面采用路由懒加载的形式引入
-import Register from "@/pages/Register";
-// import Search from "@/pages/Search";  ///下面采用路由懒加载的形式引入
-import Detail from "@/pages/Detail";
-import AddCartSuccess from "@/pages/AddCartSuccess";
-import ShopCart from "@/pages/ShopCart";
-import Trade from "@/pages/Trade"
-import Pay from "@/pages/Pay"
-import PaySuccess from "@/pages/PaySuccess"
-import Center from "@/pages/Center"
+import Home from "@/views/Home";
+// import Login from "@/views/Login";    ///下面采用路由懒加载的形式引入
+import Register from "@/views/Register";
+// import Search from "@/views/Search";  ///下面采用路由懒加载的形式引入
+import Detail from "@/views/Detail";
+import AddCartSuccess from "@/views/AddCartSuccess";
+import ShopCart from "@/views/ShopCart";
+import Trade from "@/views/Trade"
+import Pay from "@/views/Pay"
+import PaySuccess from "@/views/PaySuccess"
+import Center from "@/views/Center"
 // 引入二级路由组件
-import MyOrder from "@/pages/Center/myOrder"
-import GroupOrder from "@/pages/Center/groupOrder"
+import MyOrder from "@/views/Center/myOrder"
+import GroupOrder from "@/views/Center/groupOrder"
 
 /* 
 路由懒加载
@@ -21,12 +21,12 @@ import GroupOrder from "@/pages/Center/groupOrder"
  */
 /* const foo = () => {
   console.log(1111);
-  return import("@/pages/Home")
+  return import("@/views/Home")
 } */
 // 简写方式为
 /* {
   path: "/home",
-  component: ()=>import("@/pages/Home"),
+  component: ()=>import("@/views/Home"),
   meta: { show: true },
 }, */
 
@@ -106,7 +106,7 @@ export default [
   },
   {
     path: "/search/:keyword?",
-    component: () => import("@/pages/Search"),
+    component: () => import("@/views/Search"),
     meta: { show: true },
     name: "search",
     // 4：路由组件能不能传递props数据？
@@ -126,12 +126,62 @@ export default [
   },
   {
     path: "/login",
-    component: () => import("@/pages/Login"),
+    component: () => import("@/views/Login"),
     meta: { show: false },
   },
   // 重定向，在项目跑起来的时候，访问 / 时立马让页面重新定向到首页
   {
     path: "/",
     redirect: "/home",
+  },
+
+
+  {
+    path: '/communication',
+    component: () => import('@/views/Communication/Communication'),
+    children: [
+      {
+        path: 'event',
+        component: () => import('@/views/Communication/EventTest/EventTest'),
+        meta: {
+          isHideFooter: true
+        },
+      },
+      {
+        path: 'model',
+        component: () => import('@/views/Communication/ModelTest/ModelTest'),
+        meta: {
+          isHideFooter: true
+        },
+      },
+      {
+        path: 'sync',
+        component: () => import('@/views/Communication/SyncTest/SyncTest'),
+        meta: {
+          isHideFooter: true
+        },
+      },
+      {
+        path: 'attrs-listeners',
+        component: () => import('@/views/Communication/AttrsListenersTest/AttrsListenersTest'),
+        meta: {
+          isHideFooter: true
+        },
+      },
+      {
+        path: 'children-parent',
+        component: () => import('@/views/Communication/ChildrenParentTest/ChildrenParentTest'),
+        meta: {
+          isHideFooter: true
+        },
+      },
+      {
+        path: 'scope-slot',
+        component: () => import('@/views/Communication/ScopeSlotTest/ScopeSlotTest'),
+        meta: {
+          isHideFooter: true
+        },
+      }
+    ],
   },
 ];

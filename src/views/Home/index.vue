@@ -17,17 +17,17 @@
 <script>
 // 引入其余的组件
 // 轮播图
-import ListContainer from "@/pages/Home/ListContainer";
+import ListContainer from "@/views/Home/ListContainer";
 // 今日推荐
-import Recommend from "@/pages/Home/Recommend";
+import Recommend from "@/views/Home/Recommend";
 // 商品推荐
-import Rank from "@/pages/Home/Rank";
+import Rank from "@/views/Home/Rank";
 // 猜你喜好
-import Like from "@/pages/Home/Like";
+import Like from "@/views/Home/Like";
 // 楼层
-import Floor from "@/pages/Home/Floor";
+import Floor from "@/views/Home/Floor";
 // 商标
-import Brand from "@/pages/Home/Brand";
+import Brand from "@/views/Home/Brand";
 
 // 引入vuex映射方法
 import { mapState } from "vuex";

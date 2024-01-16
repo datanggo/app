@@ -15,6 +15,9 @@ module.exports = defineConfig({
     }
   },
 
+  // 配置打包之后生成的引用的路径
+  publicPath: "./",
+  assetsDir: "./",
   // 配置打包时不生成map文件
   productionSourceMap: false
 })

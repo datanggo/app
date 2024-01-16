@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 自定义指令 -->
-    <h1 v-upper="msg"></h1>
+    <h1 v-upper="msg" @click="getNews"></h1>
     <!-- 我是跟组件 -->
     <!-- 使用其他组件 -->
     <Header></Header>
@@ -39,6 +39,13 @@ export default {
 
     // 获取用户信息在首页展示
     this.$store.dispatch("getUserInfo");
+  },
+
+  // 方法
+  methods: {
+    getNews() {
+      this.$router.push("/communication");
+    },
   },
 };
 </script>
