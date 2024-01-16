@@ -1,5 +1,7 @@
 <template>
   <div>
+    <!-- 自定义指令 -->
+    <h1 v-upper="msg"></h1>
     <!-- 我是跟组件 -->
     <!-- 使用其他组件 -->
     <Header></Header>
@@ -17,6 +19,12 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 export default {
   name: "app",
+  data() {
+    return {
+      msg: "abc",
+    };
+  },
+
   // 注册路由
   components: {
     Header,

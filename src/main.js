@@ -46,6 +46,26 @@ import 'swiper/css/swiper.min.css'
 import * as API from "@/api"
 // 上面的意思即引入api文件里暴露的所有对象,重名为API
 
+// 引入图片懒加载插件
+import VueLazyload from "vue-lazyload"
+// 引入用到的图片
+import loadimage from "@/assets/1.gif"
+// 注册图片懒加载插件
+Vue.use(VueLazyload, {
+  // 懒加载默认的图片
+  loading: loadimage,
+})
+
+// 引入自己定义的插件
+import myPlugins from "@/plugins/myPlugins"
+// 注册插件
+Vue.use(myPlugins, {
+  name: "upper"
+})//调用
+
+
+// 引入表单校验插件
+import "@/plugins/validate"
 
 new Vue({
   render: h => h(App),
